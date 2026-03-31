@@ -20,13 +20,7 @@ A security-focused FastAPI service that detects QR codes in files of various for
 
 ## Setup
 
-### 1. Clone / Navigate
-
-```bash
-cd qr_service_2.0
-```
-
-### 2. Create a Virtual Environment
+### 1. Create a Virtual Environment
 
 ```bash
 python -m venv venv
@@ -34,13 +28,13 @@ venv\Scripts\activate      # Windows
 # source venv/bin/activate  # Mac/Linux
 ```
 
-### 3. Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure Environment
+### 3. Configure Environment
 
 Copy the example env file and edit it:
 
@@ -65,7 +59,7 @@ RATE_LIMIT_WINDOW_SECONDS=60
 
 > **⚠️ Change the default API key before deploying!**
 
-### 5. Run the Server
+### 4. Run the Server
 
 ```bash
 uvicorn app.main:app --reload --port 8000
