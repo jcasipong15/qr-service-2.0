@@ -1,9 +1,9 @@
-from .image import process_image
-from .pdf import process_pdf
-from .docx import process_docx
-from .xlsx import process_xlsx
-from .pptx import process_pptx
-from .zip import process_zip
+from app.processors.image import process_image
+from app.processors.pdf import process_pdf
+from app.processors.docx import process_docx
+from app.processors.xlsx import process_xlsx
+from app.processors.pptx import process_pptx
+from app.processors.zip import process_zip
 
 PROCESSORS = {
     "image": process_image,

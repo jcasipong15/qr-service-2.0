@@ -7,6 +7,7 @@ class QRLocation(BaseModel):
     source: str
     bounding_box: dict | None = None
     data: str
+    payment_provider: str | None = None
 
 
 class DetectionResult(BaseModel):

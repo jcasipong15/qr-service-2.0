@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List
 
-import cv2
+import cv2  # type: ignore
 from dotenv import load_dotenv
 load_dotenv()  # Load .env before anything reads os.getenv()
 
