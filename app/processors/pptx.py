@@ -12,34 +12,38 @@ from app.processors.pdf import process_pdf
 
 
 def process_pptx(data: bytes, filename: str) -> DetectionResult:
-    """
-    Strategy 1: Convert PPTX -> PDF via LibreOffice (catches vectors, EMF, all image types).
-    Strategy 2: Direct media extraction from PPTX ZIP (raster images only).
-    """
-    # Strategy 1: LibreOffice render
+    found = []
+    seen_data = set()
+    scanned_count = 0
+
     pdf_data = convert_to_pdf(data, "pptx")
     if pdf_data:
-        result = process_pdf(pdf_data, filename)
-        result.file_type = "pptx"
-        return result
+        try:
+            pdf_result = process_pdf(pdf_data, filename)
+            scanned_count += pdf_result.pages_or_frames_scanned
+            for qr in pdf_result.qr_codes:
+                if qr.data not in seen_data:
+                    found.append(qr)
+                    seen_data.add(qr.data)
+        except Exception:
+            pass
 
-    # Strategy 2: ZIP media extraction fallback
-    found = []
-    img_count = 0
     image_exts = {".png", ".jpg", ".jpeg", ".bmp", ".gif", ".webp", ".tiff"}
-
     try:
         with zipfile.ZipFile(io.BytesIO(data)) as zf:
             media_entries = [
                 e for e in zf.namelist()
                 if e.startswith("ppt/media/") and Path(e).suffix.lower() in image_exts
             ]
-            img_count = len(media_entries)
+            scanned_count += len(media_entries)
             for entry in media_entries:
                 try:
                     pil_img = Image.open(io.BytesIO(zf.read(entry)))
                     img_cv = pil_to_cv2(pil_img)
-                    found.extend(detect_qr_in_image(img_cv, f"media: {Path(entry).name}"))
+                    for qr in detect_qr_in_image(img_cv, f"media: {Path(entry).name}"):
+                        if qr.data not in seen_data:
+                            found.append(qr)
+                            seen_data.add(qr.data)
                 except Exception:
                     continue
     except zipfile.BadZipFile:
@@ -51,7 +55,7 @@ def process_pptx(data: bytes, filename: str) -> DetectionResult:
         file_type="pptx",
         qr_codes_found=count,
         qr_codes=found,
-        pages_or_frames_scanned=img_count,
+        pages_or_frames_scanned=scanned_count,
         risk_level=risk_level(count),
-        message=f"{count} QR code(s) detected in {img_count} embedded image(s)." if count else f"No QR codes found ({img_count} embedded images scanned).",
+        message=f"{count} QR code(s) detected (scanned {scanned_count} pages/embedded images)." if count else f"No QR codes found (scanned {scanned_count} pages/embedded images).",
     )

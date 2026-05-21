@@ -9,8 +9,8 @@ A security-focused FastAPI service that detects QR codes in files of various for
 | Images     | `.png`, `.jpg`, `.bmp`, `.gif`, `.webp`, `.tiff` | Direct OpenCV scan                                 |
 | PDF        | `.pdf`                                           | Page-by-page render at 2× zoom                     |
 | Word       | `.docx`                                          | Embedded image extraction                          |
-| Excel      | `.xlsx`                                          | `xl/media/` extraction → LibreOffice PDF render    |
-| PowerPoint | `.pptx`                                          | LibreOffice PDF render → media extraction fallback |
+| Excel      | `.xlsx`                                          | Hybrid: PDF render + direct `xl/media/` image scan  |
+| PowerPoint | `.pptx`                                          | Hybrid: PDF render + direct `ppt/media/` image scan |
 | Archive    | `.zip`                                           | Recursive image scan                               |
 
 ## Prerequisites
