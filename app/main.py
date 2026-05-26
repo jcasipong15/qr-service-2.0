@@ -52,6 +52,9 @@ SUPPORTED_TYPES = {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation": "pptx",
+    "application/msword": "doc",
+    "application/vnd.ms-excel": "xls",
+    "application/vnd.ms-powerpoint": "ppt",
     "application/zip": "zip",
     "application/x-zip-compressed": "zip",
 }
@@ -63,6 +66,9 @@ EXT_FALLBACK = {
     ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    ".doc": "application/msword",
+    ".xls": "application/vnd.ms-excel",
+    ".ppt": "application/vnd.ms-powerpoint",
     ".zip": "application/zip",
 }
 
